@@ -1,0 +1,5 @@
+name: 'view_picture'
+type: module
+description: 'Alter view for render picture'
+core: 8.x
+package: 'Custom'

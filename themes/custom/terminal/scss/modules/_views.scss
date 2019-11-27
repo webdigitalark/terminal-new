@@ -1,0 +1,91 @@
+.filters{
+  background-color: $light-gray;
+  padding-top: $global-padding;
+  padding-bottom: $global-padding;
+
+  legend{
+    font-weight: bold;
+  }
+}
+
+.views-exposed-form{
+  .form-radios{
+    display: flex;
+    justify-content: right;
+
+    .form-item{
+      padding: 1rem;
+
+    }
+    label{
+      text-transform: uppercase;
+      color: $dark-gray;
+    }
+  }
+
+  .form-checkboxes{
+    label{
+      position: relative;
+      padding-left: 1.5rem;
+      margin: 0;
+      margin-bottom: 0.5rem;
+      &:before{
+        border: 1px solid $medium-gray;
+        background-color: $white;
+        display: block;
+        width: calc(1rem + 2px);
+        height: calc(1rem + 2px);
+        position: absolute;
+        content: '';
+        left: 0;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+      }
+    }
+    input{
+      display: none;
+
+      &[checked]{
+        + label{
+          &:before{
+            background-color: $success-color;
+            background: url('../images/check.png');
+            background-color: $success-color;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .form-item-combine{
+    position: relative;
+    &:before{
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: absolute;
+      content: '';
+      background: url('../images/search.png');
+      background-position: center center;
+      background-repeat: no-repeat;
+      right: 0.5rem;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.pager-infinite-row{
+  .js-pager__items{
+    @extend .padding-horizontal-1;
+    max-width: $global-width;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}

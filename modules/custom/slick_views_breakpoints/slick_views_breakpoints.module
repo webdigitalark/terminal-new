@@ -1,0 +1,161 @@
+<?php
+/**
+ * @file
+ * Hooks and preprocess functions for the Slick module.
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Component\Serialization\Json;
+use Drupal\blazy\Blazy;
+use Drupal\slick\SlickDefault;
+use Drupal\slick\Entity\Slick;
+
+/**
+ * @file
+ * Provides Slick carousel integration with Views.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function slick_views_breakpoints_help($route_name) {
+  if ($route_name == 'help.page.slick_views_breakpoints') {
+    $output = file_get_contents(dirname(__FILE__) . '/README.md');
+    // @todo remove check once Blazy has stable release.
+    return function_exists('blazy_parse_markdown') && blazy_parse_markdown($output) ? blazy_parse_markdown($output) : '<pre>' . $output . '</pre>';
+  }
+  return '';
+}
+ /**
+ * Implements hook_preprocess_HOOK().
+ */
+function slick_views_breakpoints_preprocess_slick(&$variables) {
+  $element   = $variables['element'];
+  $defaults  = Slick::htmlSettings();
+  $settings  = isset($element['#settings']) ? array_merge($defaults, $element['#settings']) : $defaults;
+  $customs   = isset($element['#options']) ? $element['#options'] : [];
+  $optionset = isset($element['#optionset']) ? $element['#optionset'] : Slick::load($settings['optionset']);
+  $js        = $customs ? array_merge($optionset->getSettings(), $customs) : $optionset->getSettings();
+
+  // Prepare attributes.
+  $attributes = &$variables['attributes'];
+  $content_attributes = new Attribute();
+  $display = $variables['display'] = $settings['display'];
+
+  $id = empty($settings['id']) ? Slick::getHtmlId('slick') : $settings['id'];
+  $attributes['id'] = $display == 'thumbnail' ? $id . '-thumbnail' : $id;
+
+  // Sniffs for Views to allow block__no_wrapper, views__no_wrapper, etc.
+  // @todo: Use $attributes if TWIG class ordering puts $attributes to the last.
+  if ($settings['view_name'] && $settings['current_view_mode']) {
+    $settings['attributes']['class'][] = str_replace('_', '-', 'slick--view--' . $settings['view_name']);
+    $settings['attributes']['class'][] = str_replace('_', '-', 'slick--view--' . $settings['view_name'] . '--' . $settings['current_view_mode']);
+  }
+
+  // @see SlickManager::buildGrid(), and this should make sense.
+  $settings['count']   = isset($settings['count']) ? $settings['count'] : count($element['#items']);
+  $settings['unslick'] = $settings['unslick'] || $settings['count'] == 1;
+
+  foreach (Slick::jsSettings() as $key => $default) {
+    $settings[$key] = isset($js[$key]) ? $js[$key] : $default;
+  }
+
+  // Blazy can still lazyload an unslick.
+  $settings['lazy'] = empty($settings['lazy']) ? $js['lazyLoad'] : $settings['lazy'];
+  if ($display != 'thumbnail') {
+    if ($settings['lazy'] == 'blazy' || !empty($settings['blazy'])) {
+      if ($settings['lazy'] == 'blazy') {
+        $js['lazyLoad'] = 'blazy';
+      }
+      $attributes['data-blazy'] = empty($settings['blazy_data']) ? '' : Json::encode($settings['blazy_data']);
+    }
+
+    if (!empty($settings['media_switch']) && empty($settings['grid'])) {
+      $switch = str_replace('_', '-', $settings['media_switch']);
+      $attributes['data-' . $switch . '-gallery'] = TRUE;
+    }
+  }
+
+  // Make slick language-direction-aware.
+  $language = \Drupal::languageManager()->getCurrentLanguage();
+  if ($language->getDirection() == 'rtl') {
+    $attributes['dir'] = $language->getDirection();
+    $js['rtl'] = $language->getDirection() ? TRUE : FALSE;
+  }
+
+  // Prevents broken slick when only one item given, or an enforced unslick.
+  if (!$settings['unslick']) {
+    $content_attributes->setAttribute('id', $attributes['id'] . '-slider');
+
+    $variables['arrow_attributes'] = new Attribute();
+    if ($display == 'main' && !empty($js['downArrow']) && !empty($js['downArrowTarget'])) {
+      $variables['arrow_down_attributes'] = new Attribute();
+    }
+
+    // focusOnSelect won't work with empty slide value, so add proper selector.
+    // Respects core Grid markups which may wrap .slick__slide within anon DIV.
+    if (empty($js['slide']) && !empty($js['focusOnSelect'])) {
+      $js['slide'] = ($js['rows'] == 1 && $js['slidesPerRow'] == 1) ? '.slick__slide' : $js['slide'];
+    }
+
+    // Add the configuration as JSON object into the slick container.
+    $variables['js'] = isset($variables['js']) ? array_merge($js, $variables['js']) : $js;
+    if ($json = $optionset->removeDefaultValues($variables['js'])) {
+      $breakpoints = $settings['breakpoints'];
+      $breakList = [];
+      foreach ($breakpoints as $size) {
+        if($size){
+          $settingsPrepare = _prepareSettings($settings['breakpoints_container_'.$size]);
+          $breakList[] = [
+            'breakpoint' => _getBreakpoints($size),
+            'settings' => array_merge($json,$settingsPrepare)
+          ];
+        }
+      }   
+      $json['responsive'] = $breakList;        
+      $content_attributes->setAttribute('data-slick', Json::encode($json));
+    }
+  }
+
+  // Pass settings and attributes to twig.
+  $variables['js'] = $js;
+  $variables['settings'] = $settings;
+  $variables['content_attributes'] = $content_attributes;
+
+  // Process individual item.
+  $variables['items'] = [];
+  foreach ($element['#items'] as $delta => $item) {
+    $settings['current_item'] = $display;
+    $settings = isset($item['settings']) ? array_merge($settings, $item['settings']) : $settings;
+    $item_attributes = isset($item['attributes']) ? $item['attributes'] : [];
+    unset($item['settings'], $item['attributes']);
+
+    $theme = $settings['vanilla'] ? 'vanilla' : ($display == 'thumbnail' ? 'thumbnail' : 'slide');
+
+    $slide = [
+      '#theme'      => 'slick_' . $theme,
+      '#item'       => $item,
+      '#delta'      => $delta,
+      '#settings'   => $settings,
+      '#attributes' => $item_attributes,
+    ];
+    $variables['items'][$delta] = $slide;
+    unset($slide);
+  }
+}
+function _getBreakpoints($size){
+  $response = [
+    'xsm' => '480',
+    'sm' => '576',
+    'md' => '768',
+    'xl' => '1200',
+  ];
+  return intval($response[$size]);
+}
+
+function _prepareSettings($settings){
+  foreach ($settings as $key => $value) {
+    $settings[$key] = intval($value);
+  }
+  return $settings;
+}

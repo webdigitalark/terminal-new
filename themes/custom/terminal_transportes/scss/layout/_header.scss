@@ -1,0 +1,86 @@
+// Non-modular or client styles for .l-header region.
+.meta-header {
+  background: #327DC3;
+  >div {
+    display:flex; 
+    justify-content: center;
+    .block-menusuperior {
+      background:#225891;
+      ul {
+        height: 100%;
+        text-transform: uppercase;
+        li {
+          border-left: 1px solid #327DC3;                        
+          a {
+            position: relative;
+            height: 100%;
+            color: #fefefe;                
+            padding: 1rem;                                
+            &.is-active {
+              background-color: #75C043;  
+              &::before {
+                position: absolute;
+                bottom: 0;
+                border: inset 0.5rem;
+                border-top-width: 0;
+                border-bottom-style: solid;
+                border-color: transparent transparent #fefefe;
+                content: '';
+                -ms-transform: translateX(-50%);
+                transform: translateX(-50%);
+                left: 50%;                  
+              }                  
+            }                 
+          }
+        }
+      }
+    }
+    .block-languageswitcher {
+      ul.links {
+        display:flex;        
+      }
+    }
+  }
+}
+
+.site-header {
+  >div {
+    >div {
+      display:flex;
+      padding:10px;
+      #block-sitebranding {
+         
+      }
+      .block-terminal-transportes-main-menu {
+        padding: 0 50px;
+        ul.menu {
+          li {
+            line-height: 1rem;
+            // vertical-align: top;
+            display: inline-block;
+            cursor: pointer; 
+            text-transform: uppercase;
+            a {
+              padding: 1rem;
+              &.is-active {
+                color: #78bf4d;                                                 
+              }
+            }                       
+          }
+        }
+      }
+      .search-block-form {
+        form {
+          display: flex;
+        }
+      }
+    }
+  }
+}
+
+.region-highlighted{
+  position:absolute;
+  z-index: 1;
+  width: 100%;
+  padding: 0;  
+}

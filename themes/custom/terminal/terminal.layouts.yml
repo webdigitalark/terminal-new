@@ -1,0 +1,67 @@
+terminal_2col:
+  label: 'Terminal: 2 column row'
+  category: 'Terminal'
+  class: '\Drupal\zurb_foundation\Plugin\Layout\FoundationLayout'
+  template: layouts/terminal_2col/terminal_2col
+  regions:
+    left:
+      label: Left column
+    right:
+      label: Right column
+  icon: layouts/terminal_2col/terminal_2col.png
+terminal_2col_bottom:
+  label: 'Terminal: 2 column row with bottom content'
+  category: 'Terminal'
+  class: '\Drupal\zurb_foundation\Plugin\Layout\FoundationLayout'
+  template: layouts/terminal_2col_bottom/terminal_2col_bottom
+  regions:
+    left:
+      label: Left column
+    right:
+      label: Right column
+    bottom:
+      label: Bottom row
+  icon: layouts/terminal_2col_bottom/terminal_2col_bottom.png
+terminal_2col_stacked:
+  label: 'Terminal: 2 column row with top and bottom content'
+  category: 'Terminal'
+  class: '\Drupal\zurb_foundation\Plugin\Layout\FoundationLayout'
+  template: layouts/terminal_2col_stacked/terminal_2col_stacked
+  regions:
+    top:
+      label: Top row
+    left:
+      label: Left column
+    right:
+      label: Right column
+    bottom:
+      label: Bottom row
+  icon: layouts/terminal_2col_stacked/terminal_2col_stacked.png
+terminal_destino:
+  label: 'Terminal: Interna destino'
+  category: 'Terminal'
+  class: '\Drupal\zurb_foundation\Plugin\Layout\FoundationLayout'
+  template: layouts/terminal_destino/terminal_destino
+  regions:
+    top:
+      label: Top row
+    top_second:
+      label: Second top row
+    left:
+      label: Left column
+    right:
+      label: Right column
+    bottom:
+      label: Bottom row
+  icon: layouts/terminal_destino/terminal_destino.png
+terminal_pagina:
+  label: 'Terminal: Página básica'
+  category: 'Terminal'
+  class: '\Drupal\zurb_foundation\Plugin\Layout\FoundationLayout'
+  template: layouts/terminal_pagina/terminal_pagina
+  regions:
+    left:
+      label: Left column
+    right:
+      label: Right column
+  icon: layouts/terminal_pagina/terminal_pagina.png

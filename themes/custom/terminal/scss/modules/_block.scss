@@ -1,0 +1,186 @@
+#block-terminal-branding{
+  position: relative;
+  width:15%;
+  max-width: 180px;
+  z-index: 2;
+  float: left;
+}
+
+.overflow-list{
+  overflow-x: hidden;
+  cursor: grab;
+  &.active{
+    cursor: grabbing;
+  }
+  .list{
+    width: 700%;
+    @include breakpoint(medium up) {
+      width: 175%;
+    }
+  }
+}
+
+.bloque-banner{
+  position: relative;
+  .field-img{
+    padding-top: 25%;
+    overflow: hidden;
+    position: relative;
+    @include breakpoint(medium up) {
+      padding-top: 20%;
+    }
+    img{
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+  }
+
+  .layout__region--bottom{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+    width: 100%;
+    max-width: $global-width;
+    .title{
+      @extend h5;
+      color: $white;
+      background-color: $secondary-color;
+      padding: $global-padding $global-padding*2;
+      margin-bottom: 0;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+    .description{
+      max-width: 600px;
+      letter-spacing: -1px;
+      p{
+        @extend h1;
+        padding: 0 $global-padding;
+        background-color: $white;
+        margin-bottom: 0;
+        line-height: 3rem;
+        display: table;       
+        &:not(:first-child){
+          margin-top: -1px;
+        }
+        &:first-child{
+          padding-top: $global-padding;
+        }
+        &:last-child{
+          padding-bottom: $global-padding;
+        }
+      }
+    }
+
+  }
+}
+
+#block-conoceelestadodelasvias{
+  padding: 3rem 0;
+  .block-title{
+    max-width: $global-width;
+    margin-left: auto;
+    margin-right: auto;
+    color: $white;
+  }
+
+  background-color: $primary-color;
+  background-image: url('../images/background-blocks.png');
+  .stat{
+    color: $white;
+    font-size: 10rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
+
+  .text{
+    display: inline-block;
+    color: $white;
+    vertical-align: middle;
+    max-width: 400px;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-bottom: 0;
+  }
+}
+
+.field-name-dynamic-block-fieldnode-empresas-de-transporte-y-destino{
+  position: relative;
+  padding: $global-padding*4 0;
+  margin: $global-margin*4 0;
+  color: $white;
+
+  .cd-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+
+    .companies{
+      background-color: $secondary-blue-color;
+    }
+    .destinations{
+      background-color: $primary-color;
+    }
+  }
+
+  h2{
+    color: $white;
+  }
+}
+
+.field-name-dynamic-block-fieldnode-empresas-destino{
+  header{
+    @extend .row, h2, .block-title, .padding-horizontal-1;
+
+    .title{
+      padding-left: $global-padding/2; 
+      display: inline-block;
+      background:red;
+    }
+  }  
+}
+
+#block-socialmedialinks{
+  margin-left: -33.3333%;
+  align-self: flex-end;
+  a{
+    color: $white;
+  }
+}
+.block-single{
+  background:#EEEEEE;
+  li.slide__grid{
+    margin:0;
+    padding:0;
+    .card-image{
+      display:flex;
+      flex-direction: row;
+      background: initial;
+      a.card-section{
+        margin: 0;
+      }
+      .card-section{
+        &::before{
+          background-color: initial;
+        }
+      }
+    }    
+  }
+  ul.slick-dots{
+    text-align: left;
+  }  
+}

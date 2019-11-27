@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Contains view_picture.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Component\Utility\Html;
+/**
+ * Implements hook_help().
+ */
+function view_picture_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the view_picture module.
+    case 'help.page.view_picture':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Alter view for render picture') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_field().
+ */
+function view_picture_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $field = $variables['field'];
+  if ($field->field == 'nothing' && strpos($variables['output'], 'source') !== false) {
+    $items = explode("</div>",$variables['output']);
+    $images = [];
+    foreach ($items as $item) {
+      if (strpos($item, 'source') !== false) {
+        $images[] = "/".end(explode('>/',$item));
+      }
+    }
+    $sizes = [
+      '',
+      'all and (min-width: 641px)',
+      'all and (min-width: 1025px)',
+      'all and (min-width: 1200px)',
+      'all and (min-width: 1440px)'
+    ];
+    
+    $output = '<picture>';
+    $itemsLength = 0;
+    if(count($images) > 2){      
+      foreach($images as $image){
+        if($itemsLength < count($images)-1){
+          $output = '<source srcset="'.$images[$itemsLength].' 1x, '.$images[$itemsLength+1].' 2x" media="'.$sizes[$itemsLength].'"/>';
+        }                
+        $itemsLength++;
+      }
+    }else if(count($images) == 2){
+      foreach($images as $image){
+        if($itemsLength == 0){
+          $output .= '<source srcset="'.$images[1].' 1x, '.$images[0].' 2x" media="'.$sizes[1].'"/>';           
+        }else if($itemsLength <= count($images)-1){
+          $output .= '<source srcset="'.$images[0].' 1x, '.$images[1].' 2x"/>';          
+        }                
+        $itemsLength++;
+      }
+      $output .= '<img src="'.$images[0].'"/>';
+    }
+    $output .= '</picture>';     
+    $variables['output'] = \Drupal\Core\Render\Markup::create($output);
+              
+  }
+}

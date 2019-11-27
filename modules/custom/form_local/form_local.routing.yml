@@ -1,0 +1,7 @@
+form_local.locals_form:
+  path: '/form_local/form/locals'
+  defaults:
+    _form: '\Drupal\form_local\Form\LocalsForm'
+    _title: 'LocalsForm'
+  requirements:
+    _access: 'TRUE'

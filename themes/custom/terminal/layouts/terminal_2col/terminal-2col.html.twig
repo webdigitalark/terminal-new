@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * Template for a 1 column layout.
+ *
+#}
+<div {{ attributes.setAttribute('id', settings.css_id).addClass('row expanded', 'terminal-2col', settings.css_classes) }}>
+  <div class="small-12 large-5 columns">
+    {{ content.left }}
+  </div>
+  <div class="small-12 large-7 columns">
+    {{ content.right }}
+  </div>
+</div>

@@ -1,0 +1,70 @@
+#block-terminal-main-menu{
+  .menu{
+    justify-content: center;
+    background-color: $white;
+    color: $primary-color;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+    text-align: center;
+    text-transform: uppercase;
+
+    li{
+      display: block;
+      position: relative;
+
+      a,span{
+        padding: $global-padding * 2;
+        line-height: 1rem;
+        vertical-align: top;
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
+    .is-active{
+      color: $success-color;
+    }
+  }
+
+  .submenu{
+    li{
+      a,span{
+        padding: $global-padding/2 $global-padding;
+      }      
+    }
+  }
+}
+
+#block-menusuperior{
+  .menu{
+    justify-content: center;
+    position: relative;
+    background-color: $secondary-color;
+    text-transform: uppercase;
+
+    li{
+      cursor: pointer;
+      
+      a{
+        color: $white;
+        background-color: $primary-color;
+        padding: $global-padding;
+        position: relative;
+        &.is-active{
+          background-color: $success-color;
+          &:before{
+            position: absolute;
+            bottom: 0;
+            border: inset 0.5rem; 
+            border-top-width: 0;
+            border-bottom-style: solid;
+            border-color: transparent transparent $white;
+            content: '';
+            transform: translateX(-50%);
+            left: 50%;
+          }
+        }
+      }
+    }
+  }
+}

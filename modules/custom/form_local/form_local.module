@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains form_local.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function form_local_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the form_local module.
+    case 'help.page.form_local':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Used for block redirect form') . '</p>';
+      return $output;
+
+    default:
+  }
+}

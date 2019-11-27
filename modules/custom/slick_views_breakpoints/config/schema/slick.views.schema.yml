@@ -1,0 +1,6 @@
+# Schema for the Slick views style plugins.
+
+views.style.slick:
+  type: slick_extended_views
+  label: 'Slick Carousel Breakpoints'
+

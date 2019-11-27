@@ -1,0 +1,29 @@
+// Non-modular or client styles for .l-footer region.
+
+#footer{
+  background-color: $primary-color;
+  padding-top: $global-padding * 2.5; 
+  color: $white;
+  .block-title{
+    @extend .h6;
+    color: $white;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .menu{
+    @extend small;
+    flex-direction: column;
+    li{
+      a,span{
+        color: $auxiliary-color;
+        padding: 0;
+        padding-bottom: $global-padding;
+      }
+    }
+  }
+}
+
+#block-views-block-entes-control-block-1{
+
+}

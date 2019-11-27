@@ -1,0 +1,8 @@
+global:
+  version: VERSION
+  css:
+    base:
+      css/terminal_transportes.css: {}
+      css/terminal_transportes.css.map: {}
+  js:
+    js/terminalTransportes.js: {}
